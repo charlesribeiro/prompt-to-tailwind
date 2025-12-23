@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js Dropdown</title>
+
+  <!-- Tailwind CSS for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Alpine.js -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+
+  <style>
+    /* This is a best practice for Alpine.js.
+      It prevents elements with x-cloak from being shown until Alpine has
+      finished initializing, avoiding any flickering on page load.
+    */
+    [x-cloak] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
+
+  <div class="w-72 p-8 bg-white rounded-lg shadow-md">
+    <!--
+      Refactored Alpine.js Dropdown Component
+      - The main container for the dropdown state and logic.
+      - @keydown.escape.window closes the dropdown if the Escape key is pressed anywhere.
+    -->
+    <div x-data="{ isOpen: false }" @keydown.escape.window="isOpen = false" class="relative inline-block text-left">
+
+      <!-- Dropdown Button -->
+      <div>
+        <button
+          @click="isOpen = !isOpen"
+          type="button"
+          class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          id="menu-button"
+          aria-haspopup="true"
+          :aria-expanded="isOpen"
+        >
+          Options
+          <svg
+            :class="{'rotate-180': isOpen}"
+            class="-mr-1 h-5 w-5 text-gray-400 transition-transform duration-200"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <!--
+        Dropdown Panel
+        - x-show toggles the visibility of this element based on the `isOpen` state.
+        - @click.outside closes the dropdown when a click occurs outside of this component.
+        - x-cloak is added to prevent a "flash" of content on page load.
+        - The inline 'style="display: none;"' has been removed as it's redundant when using x-show.
+      -->
+      <div
+        x-show="isOpen"
+        @click.outside="isOpen = false"
+        x-cloak
+        x-transition:enter="transition ease-out duration-100"
+        x-transition:enter-start="transform opacity-0 scale-95"
+        x-transition:enter-end="transform opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-75"
+        x-transition:leave-start="transform opacity-100 scale-100"
+        x-transition:leave-end="transform opacity-0 scale-95"
+        class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="menu-button"
+        tabindex="-1"
+      >
+        <div class="py-1" role="none">
+          <a href="#" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+          <a href="#" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+          <a href="#" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
