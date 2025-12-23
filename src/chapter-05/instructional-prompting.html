@@ -1,27 +1,100 @@
-<html>
-  <head>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  </head>
-  <body>
-    <div x-data="{ isOpen: false }" class="p-8 bg-gray-100 rounded-lg">
-      <button
-        @click="isOpen = !isOpen"
-        class="px-4 py-2 font-semibold text-white bg-blue-600 rounded-md"
-      >
-        Toggle Content
-      </button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instructional Prompting - Headless UI Modal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div id="root"></div>
 
-      <div
-        x-show="isOpen"
-        x-transition
-        class="p-4 mt-4 bg-white border rounded-md"
-      >
-        <p class="text-gray-700">This content can be shown or hidden!</p>
-      </div>
-    </div>
-  </body>
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.3.1",
+      "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+      "@headlessui/react": "https://esm.sh/@headlessui/react@2.0.0"
+    }
+  }
+  </script>
+
+  <script type="text/babel" data-type="module">
+    import React, { Fragment, useState } from 'react';
+    import ReactDOM from 'react-dom/client';
+    import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
+
+    function AccessibleModal() {
+      let [isOpen, setIsOpen] = useState(false);
+
+      return (
+        <>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-80 hover:bg-opacity-90"
+          >
+            Open Dialog
+          </button>
+
+          <Transition appear show={isOpen} as={Fragment}>
+            <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
+              {/* Backdrop Overlay */}
+              <TransitionChild
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-black bg-opacity-40" />
+              </TransitionChild>
+
+              <div className="fixed inset-0 overflow-y-auto">
+                <div className="flex items-center justify-center min-h-full p-4 text-center">
+                  {/* Modal Panel */}
+                  <TransitionChild
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
+                  >
+                    <DialogPanel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                      <DialogTitle as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                        Payment Successful
+                      </DialogTitle>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">
+                          Your payment has been successfully submitted. We've sent you an email with all of the details of your order.
+                        </p>
+                      </div>
+                      <div className="mt-4">
+                        <button
+                          type="button"
+                          className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          Got it, thanks!
+                        </button>
+                      </div>
+                    </DialogPanel>
+                  </TransitionChild>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
+        </>
+      );
+    }
+
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<AccessibleModal />);
+  </script>
+</body>
 </html>
