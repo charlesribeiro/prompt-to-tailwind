@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Static Bar Chart</title>
+  <link rel="stylesheet" href="../../dist/output.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-primary: #4f46e5;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <div class="container mx-auto p-8">
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">Static Bar Chart</h2>
+      <div class="relative h-96">
+        <canvas id="myBarChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Helper to get color from Tailwind theme
+    const getThemeColor = (variableName) => {
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue(variableName)
+        .trim();
+    };
+
+    const barChartCtx = document.getElementById('myBarChart');
+
+    new Chart(barChartCtx, {
+      type: 'bar',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        datasets: [
+          {
+            label: 'Monthly Sales',
+            data: [12, 19, 8, 15, 22, 13],
+            backgroundColor: getThemeColor('--color-primary'),
+            borderColor: getThemeColor('--color-primary'),
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  </script>
+</body>
+</html>
