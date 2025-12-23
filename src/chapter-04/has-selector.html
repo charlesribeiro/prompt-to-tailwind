@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Chapter 4 - Has Selector Demo</title>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans p-8">
+  <h1 class="text-2xl font-bold mb-6">Has Selector Demo</h1>
+  <p class="mb-8 text-gray-600 max-w-2xl">
+    The <code class="px-2 py-1 bg-gray-100 rounded text-sm">has-[]</code> variant allows parent elements to style themselves based on the state of their children. Try entering an invalid email to see the border and error message appear.
+  </p>
+
+  <div class="max-w-md mx-auto">
+    <div class="group rounded-md border border-gray-300 p-2 has-[input:not(:placeholder-shown):invalid]:border-red-500 has-[input:not(:placeholder-shown):invalid]:ring-1 has-[input:not(:placeholder-shown):invalid]:ring-red-500">
+      <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        class="w-full border-0 p-1 focus:ring-0"
+        placeholder="you@example.com"
+      />
+      <p class="hidden text-sm text-red-600 group-has-[input:not(:placeholder-shown):invalid]:block">
+        Please enter a valid email address.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
