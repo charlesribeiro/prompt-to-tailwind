@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../dist/output.css" rel="stylesheet">
+    <title>Tailwind + AlpineJS Headline Extractor</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body class="flex items-center justify-center min-h-screen bg-slate-100 font-sans">
+    <div
+      x-data="{
+        url: '',
+        loading: false,
+        error: null,
+        data: [],
+
+        buildProxyChain(targetUrl) {
+          return [
+            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
+            `https://cors.isomorphic-git.org/${targetUrl}`,
+            `https://thingproxy.freeboard.io/fetch/${targetUrl}`,
+            `https://yacdn.org/proxy/${targetUrl}`,
+            `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}#json`,
+          ];
+        },
+
+        async fetchHtmlThroughProxies(targetUrl) {
+          const candidates = this.buildProxyChain(targetUrl);
+
+          for (const proxy of candidates) {
+            try {
+              const res = await fetch(proxy, { method: 'GET' });
+              if (!res.ok) continue;
+
+              // Handle the AllOrigins JSON variant (tagged with #json)
+              if (proxy.endsWith('#json')) {
+                const json = await res.json();
+                if (json && json.contents) return json.contents;
+                continue;
+              }
+
+              // Others return raw HTML
+              const text = await res.text();
+              if (text && text.length) return text;
+            } catch (_err) {
+              // try next proxy
+            }
+          }
+          throw new Error('All proxy attempts failed or were blocked.');
+        },
+
+        async handleSubmit() {
+          if (!this.url) {
+            this.error = 'Please enter a URL.';
+            return;
+          }
+
+          this.loading = true;
+          this.error = null;
+          this.data = [];
+
+          try {
+            const htmlString = await this.fetchHtmlThroughProxies(this.url);
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+
+            const headlines = doc.querySelectorAll('h2');
+            const extractedData = Array.from(headlines)
+              .map((el) => ({ text: el.textContent.trim() }))
+              .filter((item) => item.text);
+
+            if (extractedData.length === 0) {
+              this.error = 'No h2 headlines were found on the specified page.';
+            } else {
+              this.data = extractedData;
+            }
+          } catch (err) {
+            this.error = `Failed to fetch data. Please check the URL or try again. (Error: ${err.message})`;
+          } finally {
+            this.loading = false;
+          }
+        }
+      }"
+      class="w-full max-w-lg bg-white rounded-xl shadow-lg p-6"
+    >
+      <h1 class="text-2xl font-bold text-slate-800 mb-4 text-center">
+        Headline Extractor
+      </h1>
+
+      <form @submit.prevent="handleSubmit" class="space-y-4">
+        <div>
+          <label
+            for="url-input"
+            class="block text-sm font-medium text-slate-700 mb-1"
+          >
+            Enter URL to Extract Headlines
+          </label>
+          <input
+            id="url-input"
+            type="text"
+            x-model="url"
+            placeholder="https://example.com"
+            class="w-full px-4 py-2 border border-slate-300 rounded-md bg-white text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+            :disabled="loading"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed"
+          :disabled="loading"
+          x-text="loading ? 'Extracting...' : 'Fetch & Extract'"
+        ></button>
+      </form>
+
+      <div class="mt-6">
+        <!-- Loading state -->
+        <div x-show="loading" class="text-center text-slate-500">
+          <p>Fetching and parsing data...</p>
+        </div>
+
+        <!-- Error state -->
+        <div
+          x-show="error"
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md"
+          role="alert"
+          x-cloak
+        >
+          <strong class="font-bold">Error:</strong>
+          <span class="block sm:inline ml-2" x-text="error"></span>
+        </div>
+
+        <!-- Success state with data -->
+        <div x-show="data.length > 0" x-cloak>
+          <h2 class="text-lg font-semibold text-slate-800 mb-3">
+            Extracted Headlines:
+          </h2>
+          <ul class="space-y-3 max-h-96 overflow-y-auto pr-2 border-t pt-4">
+            <template x-for="(item, index) in data" :key="index">
+              <li
+                class="bg-slate-50 p-3 rounded-md border border-slate-200 text-slate-700"
+                x-text="item.text"
+              ></li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [x-cloak] { display: none !important; }
+    </style>
+  </body>
+</html>
