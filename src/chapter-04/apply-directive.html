@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../../dist/output.css" rel="stylesheet">
+  <title>Chapter 4 - Apply Directive Demo</title>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans p-8">
+  <h1 class="text-2xl font-bold mb-6">@apply Directive Demo</h1>
+  <p class="mb-8 text-gray-600 max-w-2xl">
+    The <code class="px-2 py-1 bg-gray-100 rounded text-sm">@apply</code> directive allows you to extract common utility patterns into custom CSS classes, making your markup cleaner when you need to reuse complex button styles.
+  </p>
+
+  <div class="max-w-md mx-auto space-y-4">
+    <div class="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+      <h2 class="text-lg font-semibold mb-4">Primary Button</h2>
+      <button class="btn-primary">
+        Click Me
+      </button>
+    </div>
+
+    <div class="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+      <h2 class="text-lg font-semibold mb-4">Multiple Buttons</h2>
+      <div class="flex flex-wrap gap-3">
+        <button class="btn-primary">Submit</button>
+        <button class="btn-primary">Save Changes</button>
+        <button class="btn-primary">Get Started</button>
+      </div>
+    </div>
+
+    <div class="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+      <h2 class="text-lg font-semibold mb-4">The CSS</h2>
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-md text-sm overflow-x-auto"><code>.btn-primary {
+  @apply bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-200;
+}
+
+.btn-primary:hover {
+  @apply bg-blue-700;
+}
+
+.btn-primary:focus {
+  @apply outline-none ring-2 ring-blue-400/75;
+}</code></pre>
+    </div>
+  </div>
+</body>
+</html>

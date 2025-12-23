@@ -1,0 +1,13 @@
+/* Custom component classes using @apply directive */
+
+.btn-primary {
+  @apply bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-200;
+}
+
+.btn-primary:hover {
+  @apply bg-blue-700;
+}
+
+.btn-primary:focus {
+  @apply outline-none ring-2 ring-blue-400/75;
+}
