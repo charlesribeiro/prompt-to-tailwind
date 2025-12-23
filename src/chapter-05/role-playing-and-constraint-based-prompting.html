@@ -1,0 +1,93 @@
+<html>
+  <head>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+  </head>
+  <body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div
+      class="w-full max-w-md p-8 mx-auto space-y-6 bg-white rounded-lg shadow-md"
+      x-data="{
+        form: {
+          name: '',
+          email: '',
+          password: ''
+        },
+        errors: {},
+        validate() {
+          this.errors = {};
+          let valid = true;
+          if (!this.form.name) {
+            this.errors.name = 'Full name is required.';
+            valid = false;
+          }
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!this.form.email || !emailRegex.test(this.form.email)) {
+            this.errors.email = 'Please enter a valid email address.';
+            valid = false;
+          }
+          if (!this.form.password || this.form.password.length < 8) {
+            this.errors.password = 'Password must be at least 8 characters long.';
+            valid = false;
+          }
+          return valid;
+        },
+        submitForm() {
+          if (this.validate()) {
+            alert('Form submitted successfully! 🎉');
+            // In a real app, you would submit the form data here.
+            // e.g., fetch('/register', { method: 'POST', body: JSON.stringify(this.form) });
+            console.log('Submitting:', this.form);
+          }
+        }
+      }"
+    >
+      <h2 class="text-2xl font-bold text-center text-gray-800">Create Account</h2>
+      <form @submit.prevent="submitForm" novalidate>
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+          <input
+            id="name"
+            type="text"
+            x-model="form.name"
+            :class="{ 'border-red-500': errors.name, 'border-gray-300': !errors.name }"
+            class="block w-full mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <p x-show="errors.name" x-text="errors.name" class="mt-1 text-xs text-red-600"></p>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+          <input
+            id="email"
+            type="email"
+            x-model="form.email"
+            :class="{ 'border-red-500': errors.email, 'border-gray-300': !errors.email }"
+            class="block w-full mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <p x-show="errors.email" x-text="errors.email" class="mt-1 text-xs text-red-600"></p>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input
+            id="password"
+            type="password"
+            x-model="form.password"
+            :class="{ 'border-red-500': errors.password, 'border-gray-300': !errors.password }"
+            class="block w-full mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <p x-show="errors.password" x-text="errors.password" class="mt-1 text-xs text-red-600"></p>
+        </div>
+
+        <div>
+          <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
