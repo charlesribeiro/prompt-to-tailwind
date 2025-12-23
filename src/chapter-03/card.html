@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3 - Responsive Card</title>
+  <link href="../../dist/output.css" rel="stylesheet">
+</head>
+<body class="p-8 bg-gray-100 dark:bg-gray-900">
+  <!-- Responsive Card Component -->
+  <div class="max-w-sm lg:max-w-lg lg:flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+    <!-- Image -->
+    <img 
+      class="w-full h-48 object-cover lg:w-1/3" 
+      src="https://placehold.co/600x400/3b82f6/ffffff?text=Hello" 
+      alt="Card image"
+    >
+    
+    <!-- Content Area -->
+    <div class="p-6 lg:w-2/3">
+      <h2 class="text-xl font-bold mb-2 dark:text-gray-100">Card Title</h2>
+      <p class="text-gray-700 dark:text-gray-300 text-base mb-4">
+        This is a brief description of the card content. It provides an overview and entices the user to learn more.
+      </p>
+      <button class="bg-blue-500 dark:bg-blue-600 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700">
+        Learn More
+      </button>
+    </div>
+  </div>
+</body>
+</html>
+
