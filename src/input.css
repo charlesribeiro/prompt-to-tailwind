@@ -3,3 +3,40 @@
 /* Configure class-based dark mode */
 @variant dark (&:where(.dark, .dark *));
 
+/* 1. Define semantic color tokens and map them to the default (light) theme. */
+@theme {
+  --color-primary: var(--color-sky-600);
+  --color-secondary: var(--color-slate-700);
+  --color-accent: var(--color-teal-500);
+  --color-surface: var(--color-white);
+  --color-on-surface: var(--color-slate-800);
+  --color-on-primary: var(--color-white);
+  --color-on-accent: var(--color-white);
+  --color-border: var(--color-slate-300);
+}
+
+/* 2. Define theme overrides within the 'base' layer. */
+@layer base {
+  [data-theme="dark"] {
+    --color-primary: var(--color-sky-400);
+    --color-secondary: var(--color-slate-300);
+    --color-accent: var(--color-teal-400);
+    --color-surface: var(--color-slate-900);
+    --color-on-surface: var(--color-slate-100);
+    --color-on-primary: var(--color-slate-900);
+    --color-on-accent: var(--color-slate-900);
+    --color-border: var(--color-slate-700);
+  }
+
+  [data-theme="high-contrast"] {
+    --color-primary: oklch(25% 0 0); /* Dark Gray - distinct from white surface (100%), provides sufficient contrast with black text */
+    --color-secondary: oklch(20% 0 0); /* Dark Gray - consistent percentage notation */
+    --color-accent: oklch(88% 0.19 256); /* Bright Purple - consistent percentage notation */
+    --color-surface: oklch(100% 0 0); /* White - high-contrast light background */
+    --color-on-surface: oklch(0% 0 0); /* Black - ensures maximum contrast and legibility */
+    --color-on-primary: oklch(100% 0 0); /* White - high contrast on dark primary background */
+    --color-on-accent: oklch(0% 0 0); /* Black - high contrast on bright accent background */
+    --color-border: oklch(0% 0 0); /* Black */
+  }
+}
+
