@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backdrop Blur Plugin Comparison</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-900">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full p-6">
+
+    <!-- Card without backdrop blur -->
+    <div class="relative">
+      <img
+        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+        alt="Ocean Background"
+        class="w-full h-64 object-cover rounded-xl"
+      />
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="bg-white/40 p-6 rounded-xl text-center">
+          <h2 class="text-xl font-bold text-gray-800">Without Blur</h2>
+          <p class="mt-2 text-gray-700">
+            This card only has a semi-transparent background.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card with backdrop blur -->
+    <div class="relative">
+      <img
+        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+        alt="Ocean Background"
+        class="w-full h-64 object-cover rounded-xl"
+      />
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="backdrop-blur-md bg-white/40 p-6 rounded-xl text-center">
+          <h2 class="text-xl font-bold text-gray-800">With Blur</h2>
+          <p class="mt-2 text-gray-700">
+            This card uses <code>backdrop-blur-md</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
