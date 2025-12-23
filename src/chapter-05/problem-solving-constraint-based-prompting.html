@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="flex items-center justify-center min-h-screen bg-gray-100 p-6">
+
+    <div x-data="{ activeTab: 'profile' }" class="w-full max-w-lg mx-auto">
+  <div
+    role="tablist"
+    aria-label="User account tabs"
+    class="flex p-1 space-x-1 bg-gray-200 rounded-xl"
+    @keydown.right.prevent.stop="$focus.wrap().next()"
+    @keydown.left.prevent.stop="$focus.wrap().prev()"
+  >
+    <button
+      id="tab-profile"
+      role="tab"
+      @click="activeTab = 'profile'"
+      :class="{ 'bg-white text-blue-600 shadow': activeTab === 'profile', 'text-gray-600 hover:bg-white/[0.6]': activeTab !== 'profile' }"
+      class="w-full px-3 py-2 text-sm font-medium leading-5 text-blue-700 rounded-lg focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60"
+      :aria-controls="'panel-profile'"
+      :aria-selected="activeTab === 'profile'"
+    >
+      Profile
+    </button>
+
+    <button
+      id="tab-settings"
+      role="tab"
+      @click="activeTab = 'settings'"
+      :class="{ 'bg-white text-blue-600 shadow': activeTab === 'settings', 'text-gray-600 hover:bg-white/[0.6]': activeTab !== 'settings' }"
+      class="w-full px-3 py-2 text-sm font-medium leading-5 text-blue-700 rounded-lg focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60"
+      :aria-controls="'panel-settings'"
+      :aria-selected="activeTab === 'settings'"
+    >
+      Settings
+    </button>
+
+    <button
+      id="tab-billing"
+      role="tab"
+      @click="activeTab = 'billing'"
+      :class="{ 'bg-white text-blue-600 shadow': activeTab === 'billing', 'text-gray-600 hover:bg-white/[0.6]': activeTab !== 'billing' }"
+      class="w-full px-3 py-2 text-sm font-medium leading-5 text-blue-700 rounded-lg focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60"
+      :aria-controls="'panel-billing'"
+      :aria-selected="activeTab === 'billing'"
+    >
+      Billing
+    </button>
+  </div>
+
+  <div class="mt-4">
+    <div
+      id="panel-profile"
+      x-show="activeTab === 'profile'"
+      role="tabpanel"
+      aria-labelledby="tab-profile"
+      class="p-4 bg-white rounded-xl"
+    >
+      <p>Profile content goes here. Users can view and edit their personal information.</p>
+    </div>
+
+    <div
+      id="panel-settings"
+      x-show="activeTab === 'settings'"
+      role="tabpanel"
+      aria-labelledby="tab-settings"
+      class="p-4 bg-white rounded-xl"
+      style="display: none;"
+    >
+      <p>Settings content goes here. Users can manage their application preferences.</p>
+    </div>
+
+    <div
+      id="panel-billing"
+      x-show="activeTab === 'billing'"
+      role="tabpanel"
+      aria-labelledby="tab-billing"
+      class="p-4 bg-white rounded-xl"
+      style="display: none;"
+    >
+      <p>Billing content goes here. Users can view their subscription and payment history.</p>
+    </div>
+  </div>
+</div>
+
+  </body>
+</html>
